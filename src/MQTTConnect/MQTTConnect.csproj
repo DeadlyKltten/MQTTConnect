@@ -1,17 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dotnet-AuraConnect-E76FA53B-F40C-451C-A4D8-6E09BF553310</UserSecretsId>
     <Version>1.1.0</Version>
-    <Authors>ASUSTeK Computer Inc.</Authors>
-    <Company>ASUSTeK Computer Inc.</Company>
+    <Authors>Lizzy</Authors>
+    <Company>DeadlyDevelopment</Company>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Product>Aura Connect</Product>
+    <Product>MQTT Connect</Product>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
+    <RootNamespace>MQTTConnect</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,6 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="M2Mqtt" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.1.0" />

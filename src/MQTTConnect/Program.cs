@@ -7,24 +7,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RGBKit.Core;
+using MQTTConnect;
 
-namespace AuraConnect
+namespace MQTTConnect
 {
-    /// <summary>
-    /// The Aura Connect service program
-    /// </summary>
     public class Program
     {
-        /// <summary>
-        /// Allocates a console window
-        /// </summary>
         [DllImport("kernel32")]
         private static extern void AllocConsole();
-
-        /// <summary>
-        /// The program entry point
-        /// </summary>
-        /// <param name="args">The command line arguments</param>
         public static void Main(string[] args)
         {
             var mutex = new Mutex(true, "MQTTConnect", out var result);
@@ -41,19 +31,13 @@ namespace AuraConnect
 
             CreateHostBuilder(args).Build().Run();
         }
-
-        /// <summary>
-        /// Creates the host builder
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <returns>The host builder</returns>
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "MQTTConnect\\logs");
 
             if (!Directory.Exists(logFolder))
                 Directory.CreateDirectory(logFolder);
-            Worker.doeiets();
+            Worker.API_Init();            
 
             return Host.CreateDefaultBuilder(args)
                 .UseWindowsService();

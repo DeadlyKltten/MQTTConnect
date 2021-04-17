@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "AuraConnect": {
+    "MQTTConnect": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
