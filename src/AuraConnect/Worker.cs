@@ -57,9 +57,6 @@ namespace AuraConnect
             _logger = logger;
             _configuration = configuration;
             _rgbKit = rgbKit;
-            _api = new RzChromaBroadcastAPI();
-            _api.ConnectionChanged += Api_ConnectionChanged;
-            _api.ColorChanged += Api_ColorChanged;
             _performanceMetricsEnabled = (bool)_configuration.GetValue(typeof(bool), "PerformanceMetricsEnabled");
             _performanceMetricsStopwatch = new Stopwatch();
         }
@@ -96,15 +93,14 @@ namespace AuraConnect
                 await Task.Delay(1000, stoppingToken);
             }
         }
-
-        /// <summary>
-        /// Occurs when the connection status to the Razer Chroma Broadcast API changes
-        /// </summary>
-        /// <param name="sender">The sending object</param>
-        /// <param name="e">The arguments</param>
-        private void Api_ConnectionChanged(object sender, RzChromaBroadcastConnectionChangedEventArgs e)
+        public static void doeiets() 
         {
-            _logger.LogInformation(new EventId(0, "Logging"), e.Connected ? "Razer Chroma Broadcast API connected" : "Razer Chroma Broadcast API disconnected");
+            RzChromaBroadcastAPI _api;
+            _api = new RzChromaBroadcastAPI();
+            _api.ConnectionChanged += Api_ConnectionChanged;
+            _api.ColorChanged += Api_ColorChanged;
+            _api.Init(Guid.Parse("e6bef332-95b8-76ec-a6d0-9f402bad244c"));
+            _api.Init(Guid.Parse("e6bef332-95b8-76ec-a6d0-9f402bad244c"));
         }
 
         /// <summary>
@@ -112,41 +108,20 @@ namespace AuraConnect
         /// </summary>
         /// <param name="sender">The sending object</param>
         /// <param name="e">The arguments</param>
-        private void Api_ColorChanged(object sender, RzChromaBroadcastColorChangedEventArgs e)
+        private static void Api_ConnectionChanged(object sender, RzChromaBroadcastConnectionChangedEventArgs e)
         {
-            var currentColor = 0;
+            // _logger.LogInformation(new EventId(0, "Logging"), e.Connected ? "Razer Chroma Broadcast API connected" : "Razer Chroma Broadcast API disconnected");
+            Console.WriteLine("Razer Chroma Broadcast API connected");
+        }
 
-            foreach (var deviceProvider in _rgbKit.DeviceProviders)
-            {
-                foreach (var device in deviceProvider.Devices)
-                {
-                    foreach (var light in device.Lights)
-                    {
-                        light.Color = e.Colors[currentColor];
-                        currentColor++;
-
-                        if (currentColor == e.Colors.Length)
-                            currentColor = 0;
-                    }
-
-                    if (_performanceMetricsEnabled)
-                    {
-                        _performanceMetricsStopwatch.Reset();
-                        _performanceMetricsStopwatch.Start();
-                    }
-
-                    if (device.Lights.Count() > 0)
-                    {
-                        device.ApplyLights();
-                    }
-
-                    if (_performanceMetricsEnabled)
-                    {
-                        _performanceMetricsStopwatch.Stop();
-                        _logger.LogInformation(new EventId(1, "Metrics"), deviceProvider.Name + " - " + device.Name + ": Took " + _performanceMetricsStopwatch.ElapsedMilliseconds + "ms To Update");
-                    }
-                }
-            }
+        /// <summary>
+        /// Occurs when the connection status to the Razer Chroma Broadcast API changes
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The arguments</param>
+        private static void Api_ColorChanged(object sender, RzChromaBroadcastColorChangedEventArgs e)
+        {
+            Console.WriteLine(e.Colors[0]);
         }
     }
 }

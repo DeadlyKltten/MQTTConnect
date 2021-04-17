@@ -27,7 +27,7 @@ namespace AuraConnect
         /// <param name="args">The command line arguments</param>
         public static void Main(string[] args)
         {
-            var mutex = new Mutex(true, "AuraConnect", out var result);
+            var mutex = new Mutex(true, "MQTTConnect", out var result);
 
             if (!result)
             {
@@ -49,26 +49,14 @@ namespace AuraConnect
         /// <returns>The host builder</returns>
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "AuraConnect\\logs");
+            var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "MQTTConnect\\logs");
 
             if (!Directory.Exists(logFolder))
                 Directory.CreateDirectory(logFolder);
+            Worker.doeiets();
 
             return Host.CreateDefaultBuilder(args)
-                .UseWindowsService()
-                .ConfigureRGBKit(rgbKit =>
-                {
-                    rgbKit.UseAura();
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddEventLog();
-                    logging.AddFile(Path.Combine(logFolder, $"AuraConnect.log"), append: true);
-                })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<Worker>();
-                });
+                .UseWindowsService();
         }
     }
 }
